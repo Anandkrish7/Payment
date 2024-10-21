@@ -1,16 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [name, setName] = useState("Naveen");
+  const [email, setEmail] = useState("nav@gmail.com");
+  const [password, setPassword] = useState("Test@123");
+  // context
+  const [state, setState] = useContext(UserContext);
 
-  const handleClick = (e) => {
-    console.log(name);
-    console.log(email);
-    console.log(password);
+  useEffect(()=>{
+    console.log(`*******`, state);
+  },[state])
+
+  const handleClick = async (e) => {
+    try {
+      e.preventDefault();
+      debugger;
+      const { data } = await axios.post("http://localhost:8000/api/register", {
+        name,
+        email,
+        password,
+      });
+      if (data.error) {
+        return toast.error(data.error);
+      }
+      toast.success(
+        `Hey ${data.rest.name}, You are part of team now. Congrats`
+      );
+      // Update the context state directly
+      setState({
+        token: data.token,
+        user: data.rest,
+      });
+
+      // Store in localStorage as stringified data
+      localStorage.setItem("auth", JSON.parse(JSON.stringify(data)));
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      toast.error(error);
+    }
   };
 
   return (
