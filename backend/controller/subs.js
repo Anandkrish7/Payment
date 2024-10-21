@@ -6,8 +6,8 @@ dotenv.config();
 const subscription = async (req, res) => {
   // PayU Test Credentials
   console.log(process.env.KEY)
-  const merchantKey = "e9zLGc"; // Replace with your actual merchant key
-  const salt = "TPzAiC0ZBL3rqLsTQZZcuOCbB0ODx2Zu"; // Replace with your actual salt
+  const merchantKey = "y3FHyG" // "e9zLGc"; // Replace with your actual merchant key
+  const salt = "1fOv13OPs5RgigzEMedlZ0JSEx9z6De3" // "TPzAiC0ZBL3rqLsTQZZcuOCbB0ODx2Zu"; // Replace with your actual salt
   const apiEndpoint = "https://test.payu.in/_payment" //"https://sandboxsecure.payu.in/_payment"; // PayU sandbox/test endpoint
 
   // Transaction Details
