@@ -1,15 +1,37 @@
+import React, { useState, useContext, useEffect } from "react";
 import PriceCard from "../components/cards/PriceCard";
 import axios from "axios";
+import { UserContext } from "../context";
+
 
 const Home = () => {
-  const handleRequest = async (e) => {
-    e.preventDefault();
+  const [state, setState] = useContext(UserContext);
+
+  useEffect(()=>{
+    console.log('***', state)
+  },[state])
+
+  useEffect(()=>{
+    fetchAccount()
+  },[])
+
+  const fetchAccount = async () => {
+    const { data } = await axios.get("/get-subscription", {
+      params: {
+        email: 'nav@gmail.com'
+      } 
+    });
+    console.log({data})
+  }
+
+  const handleRequest = async (amount,plan) => {
+    debugger
     try {
       const { data } = await axios.post("/create-subscription", {
-        email: "john@example.com", // Send any required data to the backend
+        email: state?.user?.email, // Send any required data to the backend
+        amount,
+        plan,
       });
-      console.log('data', data);
-
       // Create a form and append the necessary fields
       const form = document.createElement('form');
       form.method = 'POST';
@@ -36,12 +58,30 @@ const Home = () => {
   return (
     <div className="container-fluid">
       <div className="row col-md-6 offset-md-3 text-center">
-        <h1 className="pt-5 fw-bold">Explore the right plan for your business</h1>
+        <h1 className="pt-5 fw-bold">SpectraIQ Pricing Plan</h1>
         <p className="lead pb-4">Choose a plan that suits you best!</p>
       </div>
       <div className="row pt-5 mb-3 text-center">
-        <PriceCard handleRequest={handleRequest} />
+        <PriceCard 
+        handleRequest={handleRequest}
+        amount = {"20.00"}
+        plan={"BASIC"}
+        head_1 = {"5 Dashboards"}
+        />
+          <PriceCard 
+        handleRequest={handleRequest}
+        amount = {"50.00"}
+        plan={"STANDARD"}  
+        head_1 = {"15 Dashboards"}
+        />
+         <PriceCard 
+        handleRequest={handleRequest}
+        amount = {"100.00"}
+        plan={"PREMIUM"}   
+        head_1 = {"25 Dashboards"}
+        />
       </div>
+     
     </div>
   );
 };
