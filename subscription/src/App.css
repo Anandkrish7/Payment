@@ -30,7 +30,7 @@ input{
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    box-shadow: 0 6px 20px #0000001a;
+    box-shadow: 0 0px 10px #0000002d;
     align-content: center
 }
 
@@ -52,5 +52,30 @@ input{
 .button-custom:hover {
     background-color: #2e89ff;
     transition: background-color 0.3s ease; 
+
+}
+.plan-label{
+    background-color: #222d4b;
+        padding: 10px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+
+}
+
+.subscribe-button{
+    width: 100%;
+    padding: 8px 120px; 
+border-radius: 5px;
+background-color: #2e89ff; 
+border: none;
+color: #fff;
+font-size: 18px; 
+font-weight: 600;
+}
+.subscribe-button:hover{
+    background-color: #0056b3;
+    color:#fff;
+    transition: background-color 0.3s ease; 
+    border: 0px;
 
 }
