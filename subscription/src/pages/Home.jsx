@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect,  } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PriceCard from "../components/cards/PriceCard";
 import axios from "axios";
 import { UserContext } from "../context";
 import { isActive, isPlan } from "./Login";
-import { useNavigate, useLocation  } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,19 +13,19 @@ const Home = () => {
       name: "BASIC",
       amount: "20.00",
       access: "5 Dashboards",
-      buttonTxt: "Subscribe"
+      buttonTxt: "Subscribe",
     },
     standard: {
       name: "STANDARD",
       amount: "50.00",
       access: "15 Dashboards",
-      buttonTxt: "Subscribe"
+      buttonTxt: "Subscribe",
     },
     premium: {
       name: "PREMIUM",
       amount: "100.00",
       access: "25 Dashboards",
-      buttonTxt: "Subscribe"
+      buttonTxt: "Subscribe",
     },
   });
 
@@ -34,111 +34,110 @@ const Home = () => {
   }, [state && state.token]);
 
   const fetchAccount = async () => {
-    debugger
+    debugger;
     const { data } = await axios.get("/get-subscription", {
       params: {
         email: sessionStorage.userId,
       },
     });
     const { active, plan } = data;
-    if(active){
-      if(plan === "BASIC"){
+    if (active) {
+      if (plan === "BASIC") {
         setItem((prev) => ({
           ...prev,
           basic: {
             ...prev.basic, // Retain other properties from the previous `basic` object
             amount: null, // Update `amount`
-            buttonTxt: "Active" // Update `buttonTxt`
+            buttonTxt: "Active", // Update `buttonTxt`
           },
-            standard: {
-              ...prev.standard,
-              buttonTxt: 'Upgrade'
-            },
-            premium: {
-              ...prev.premium,
-              buttonTxt: 'Upgrade'
-            }
+          standard: {
+            ...prev.standard,
+            buttonTxt: "Upgrade",
+          },
+          premium: {
+            ...prev.premium,
+            buttonTxt: "Upgrade",
+          },
         }));
-      }else if(plan === "STANDARD"){
+      } else if (plan === "STANDARD") {
         setItem((prev) => ({
           ...prev,
           basic: {
-            ...prev.basic, 
+            ...prev.basic,
           },
-            standard: {
-              ...prev.standard,
-              amount: null,
-              buttonTxt: 'Active'
-            },
-            premium: {
-              ...prev.premium,
-            }
+          standard: {
+            ...prev.standard,
+            amount: null,
+            buttonTxt: "Active",
+          },
+          premium: {
+            ...prev.premium,
+          },
         }));
-      }else if(plan === "PREMIUM"){
+      } else if (plan === "PREMIUM") {
         setItem((prev) => ({
           ...prev,
           basic: {
-            ...prev.basic, 
+            ...prev.basic,
           },
-            standard: {
-              ...prev.standard,
-            },
-            premium: {
-              ...prev.premium,
-              amount: null,
-              buttonTxt: 'Active'
-            }
+          standard: {
+            ...prev.standard,
+          },
+          premium: {
+            ...prev.premium,
+            amount: null,
+            buttonTxt: "Active",
+          },
         }));
       }
-      
     }
   };
 
   const handleRequest = async (amount, plan, buttonTxt) => {
-    if(isActive()){
-      if(isPlan() === 'BASIC'){
-        setItem((prev)=>({
+    if (isActive()) {
+      if (isPlan() === "BASIC") {
+        setItem((prev) => ({
           ...prev,
           standard: {
             ...prev.standard,
-            buttonTxt: 'Upgrade'
+            buttonTxt: "Upgrade",
           },
           premium: {
             ...prev.premium,
-            buttonTxt: 'Upgrade'
-          }
-        }))
+            buttonTxt: "Upgrade",
+          },
+        }));
       }
     }
 
-    if(buttonTxt === 'Active'){
-      if(plan === 'BASIC'){
-        setState((prev)=>({
+    if (buttonTxt === "Active") {
+      if (plan === "BASIC") {
+        setState((prev) => ({
           ...prev,
-          plan: 'BASIC'
-        }))
-        navigate('/account')
-        return
-      }else if(plan === 'STANDARD'){
-        setState((prev)=>({
+          plan: "BASIC",
+        }));
+        navigate("/account");
+        return;
+      } else if (plan === "STANDARD") {
+        setState((prev) => ({
           ...prev,
-          plan: 'STANDARD'
-        }))
-        navigate('/account')
-        return
-      }else if(plan === 'PREMIUM'){
-        setState((prev)=>({
+          plan: "STANDARD",
+        }));
+        navigate("/account");
+        return;
+      } else if (plan === "PREMIUM") {
+        setState((prev) => ({
           ...prev,
-          plan: 'PREMIUM'
-        }))
-        navigate('/account')
-        return
+          plan: "PREMIUM",
+        }));
+        navigate("/account");
+        return;
       }
     }
-    
-    if(buttonTxt === 'Upgrade'){
-      alert('you have to upgrade')
-      return
+
+    if (buttonTxt === "Upgrade") {
+      alert("you have to upgrade");
+      return;
     }
     try {
       const { data } = await axios.post("/create-subscription", {
@@ -172,8 +171,8 @@ const Home = () => {
   return (
     <div className="container-fluid">
       <div className="row col-md-6 offset-md-3 text-center">
-        <h1 className="pt-5 fw-bold">SpectraIQ Pricing Plan</h1>
-        <p className="lead pb-4">Choose a plan that suits you best!</p>
+        <h4 className="pt-5 fw-bold">SpectraIQ Pricing Plan</h4>
+        <p className="">Choose a plan that suits you best!</p>
       </div>
       <div className="row pt-5 mb-3 text-center">
         <PriceCard

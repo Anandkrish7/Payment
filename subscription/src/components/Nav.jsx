@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom"; // Ensure the correct import
-import { isAuth } from "../utils/functions";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context";
-
+import SpectraLogo from "../assets/Spectra_logo-CpPh7jlj (1).svg";
+import "../App.css";
 const Nav = () => {
   const [state, setState] = useContext(UserContext);
   const navigate = useNavigate();
@@ -16,15 +16,26 @@ const Nav = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav">
+    <nav
+      className="navbar navbar-expand-lg navbar-light bg-light1"
+      id="nav-background"
+    >
+      <div className="collapse navbar-collapse">
+        <ul className="navbar-nav" style={{ gap: "50px" }}>
+          <img
+            src={SpectraLogo}
+            style={{
+              width: "120px",
+              marginRight: "800px",
+              marginLeft: "20px",
+            }}
+          />
           <li className="nav-item active">
             <Link className="nav-link" to="/">
               Home
             </Link>
           </li>
-          {sessionStorage.token || state && state.token ? (
+          {sessionStorage.token || state?.token ? (
             <li className="nav-item">
               <Link onClick={logout} className="nav-link">
                 Logout

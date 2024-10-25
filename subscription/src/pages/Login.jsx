@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/index";
-
+import "../App.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,13 +14,13 @@ const Login = () => {
   // context
   const [state, setState] = useContext(UserContext);
 
-  useEffect(()=>{
-    console.log("login",state)
-  },[state])
+  useEffect(() => {
+    console.log("login", state);
+  }, [state]);
 
   const handleClick = async (e) => {
     try {
-      debugger
+      debugger;
       e.preventDefault();
       const { data } = await axios.post("/login", {
         email,
@@ -45,13 +45,12 @@ const Login = () => {
       //     navigate("/");
       //   }, 0);
       // }
-      setState(data)
-        sessionStorage.setItem('userId', data?.user?.email)
-        sessionStorage.setItem('token', data.token)
+      setState(data);
+      sessionStorage.setItem("userId", data?.user?.email);
+      sessionStorage.setItem("token", data.token);
       setTimeout(() => {
         navigate("/");
       }, 0);
-
     } catch (error) {
       console.error(error);
       toast.error(error);
@@ -61,33 +60,32 @@ const Login = () => {
   return (
     <>
       <div className="d-flex justify-content-center" style={{ height: "80vh" }}>
-        <div className="container align-items-center d-flex">
-          <div className="row col-md-6 offset-md-3 text-center">
-            <h1 className="pt-5 fw-bold">Login</h1>
-            <p className="lead pb-4">
-              Access your subscription. Anytime, Anywhere
-            </p>
+        <div className="Login-Container">
+          <div className="Login-Box">
+            <h4>Login</h4>
+            <p>Access your subscription. Anytime, Anywhere</p>
 
-            <div className="form-group">
+            <div className="">
               <Input
                 label="Email"
                 value={email}
                 setValue={setEmail}
-                type="Email"
+                type="email"
+                placeholder={"Email"}
               />
               <Input
                 label="Password"
                 value={password}
                 setValue={setPassword}
                 type="Password"
+                placeholder={"Password"}
               />
 
-              <div className="d-grid">
+              <div className="" style={{ width: "100%" }}>
                 <Button
                   handleClick={handleClick}
-                  type="danger"
                   text="Login"
-                  size="sm"
+                  className="button-custom"
                 />
               </div>
             </div>
@@ -99,15 +97,11 @@ const Login = () => {
 };
 
 const isActive = () => {
-  return sessionStorage.getItem('active') === 'true' ? true : false
-}
+  return sessionStorage.getItem("active") === "true" ? true : false;
+};
 
 const isPlan = () => {
-  return sessionStorage.getItem('plan')
-}
+  return sessionStorage.getItem("plan");
+};
 
-export {
-  Login,
-  isActive,
-  isPlan
-} ;
+export { Login, isActive, isPlan };
