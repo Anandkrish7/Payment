@@ -11,7 +11,8 @@ const Nav = () => {
   const logout = () => {
     localStorage.removeItem("auth");
     navigate("/login");
-    setState({})
+    setState({});
+    sessionStorage.clear();
   };
 
   return (
@@ -23,10 +24,12 @@ const Nav = () => {
               Home
             </Link>
           </li>
-          {state && state.token ? (
-            <span onClick={logout} className="nav-link">
-              Logout
-            </span>
+          {sessionStorage.token || state && state.token ? (
+            <li className="nav-item">
+              <Link onClick={logout} className="nav-link">
+                Logout
+              </Link>
+            </li>
           ) : (
             <>
               <li className="nav-item">

@@ -20,6 +20,7 @@ const Login = () => {
 
   const handleClick = async (e) => {
     try {
+      debugger
       e.preventDefault();
       const { data } = await axios.post("/login", {
         email,
@@ -28,9 +29,29 @@ const Login = () => {
       if (data.error) {
         return toast.error(data.error);
       }
-      console.log('data',data)
+      // const { payment } = data;
+      // if(payment?.active){
+      //   console.log('data',data)
+      //   sessionStorage.setItem('userId', data?.user?.email)
+      //   sessionStorage.setItem('active', true)
+      //   sessionStorage.setItem('plan', payment.plan)
+      //   setState(data)
+      //   setTimeout(() => {
+      //     navigate("/");
+      //   }, 0);
+      // }else{
+      //   setState(data)
+      //   setTimeout(() => {
+      //     navigate("/");
+      //   }, 0);
+      // }
       setState(data)
-      navigate("/");
+        sessionStorage.setItem('userId', data?.user?.email)
+        sessionStorage.setItem('token', data.token)
+      setTimeout(() => {
+        navigate("/");
+      }, 0);
+
     } catch (error) {
       console.error(error);
       toast.error(error);
@@ -77,4 +98,16 @@ const Login = () => {
   );
 };
 
-export default Login;
+const isActive = () => {
+  return sessionStorage.getItem('active') === 'true' ? true : false
+}
+
+const isPlan = () => {
+  return sessionStorage.getItem('plan')
+}
+
+export {
+  Login,
+  isActive,
+  isPlan
+} ;

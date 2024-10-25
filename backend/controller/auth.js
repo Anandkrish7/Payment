@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const register = async (req, res) => {
   try {
@@ -72,10 +73,28 @@ const login = async (req, res) => {
   });
   const { password, ...rest } = user._doc;
 
+  // check is active user
+  // Get the default database connection
+  const db = mongoose.connection;
+  const paymentCollection =  db.collection("payments");
+  const result = await paymentCollection.findOne({email})
+
+  const isExpired = isSubscriptionExpired(result?.subscriptionEndDate);
+  if(isExpired){
+    res.json({
+      expiredLogin: true
+    });
+  }
   res.json({
     token,
     user: rest,
+    payment: result
   });
 };
+
+function isSubscriptionExpired(subscriptionEndDate) {
+  const currentDate = new Date();
+  return subscriptionEndDate < currentDate;
+}
 
 export { register, login };

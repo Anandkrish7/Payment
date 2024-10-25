@@ -6,22 +6,22 @@ dotenv.config();
 const subscription = async (req, res) => {
   // PayU Test Credentials
   console.log(process.env.KEY)
-  const merchantKey = "y3FHyG" // "e9zLGc"; // Replace with your actual merchant key
-  const salt = "1fOv13OPs5RgigzEMedlZ0JSEx9z6De3" // "TPzAiC0ZBL3rqLsTQZZcuOCbB0ODx2Zu"; // Replace with your actual salt
-  const apiEndpoint = "https://test.payu.in/_payment" //"https://sandboxsecure.payu.in/_payment"; // PayU sandbox/test endpoint
+  const { amount, plan, userID } = req.body;
+  const merchantKey =  process.env.KEY  
+  const salt =  process.env.SALT  
+  const apiEndpoint = process.env.PAYU_URL
 
   // Transaction Details
   const txnid = "txn" + new Date().getTime(); // Unique transaction ID
-  const amount = "100.00"; // Example amount
   const productInfo = "Test Product";
-  const firstName = "John";
-  const email = "john@example.com";
+  const firstName = "Naveen";
+  const email = userID;
   const phone = "7639051376";
-  const surl = "http://example.com/success"; // Success URL
-  const furl = "http://example.com/failure"; // Failure URL
-
+  const surl = "http://localhost:8000/api/success" //"http://127.0.0.1:5173/success"; // Success URL 
+  const furl = "http://localhost:8000/api/failure"; // Failure URL
+  console.log('&&&&&&&&&&',email)
   // UDF fields (optional but required in the hash calculation)
-  const udf1 = ""; // Leave empty or populate if required
+  const udf1 = plan; // Leave empty or populate if required
   const udf2 = "";
   const udf3 = "";
   const udf4 = "";
@@ -32,6 +32,12 @@ const subscription = async (req, res) => {
   
   // Generate the hash using SHA512
   const hash = CryptoJS.SHA512(hashString).toString(CryptoJS.enc.Hex);
+
+  console.log('udf1 value:', udf1);
+  console.log('Hash String for transaction:', hashString);
+  console.log('Generated Hash:', hash);
+  
+  console.log('*********',plan)
 
   // Prepare the data for sending (form fields)
   const data = {
@@ -45,7 +51,10 @@ const subscription = async (req, res) => {
     surl: surl,
     furl: furl,
     hash: hash, // Correctly calculated hash
+    udf1: udf1,
   };
+
+  console.log('data',data)
 
   // Send back the form fields to the client
   res.json({

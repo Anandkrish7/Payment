@@ -2,11 +2,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
-import Login from "./pages/Login";
+import {Login} from "./pages/Login";
 import Nav from "./components/Nav";
 import Success from "./pages/Success";
-import Failure from "./pages/failure";
+import Failure from "./pages/Failure";
 import { useLocation } from "react-router-dom"; // Import useLocation
+import Account from "./pages/Account";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function Main() {
         <Route path="/login" element={<Login />} />
         <Route path="/success" element={<Success />} />
         <Route path="/failure" element={<Failure />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </>
   );
